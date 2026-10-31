@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectShowcase from '../components/ProjectShowcase.astro';
+import { projects } from '../data/projects';
+import { site, skillGroups } from '../data/site';
+---
+
+<BaseLayout title={site.title}>
+  <section class="hero content-width" aria-labelledby="hero-title">
+    <p class="eyebrow">Software engineering & full-stack development</p>
+    <h1 id="hero-title">Building software that<br class="desktop-break" /> solves real problems<span class="accent">.</span></h1>
+    <p class="hero-introduction">
+      I’m Joel, a recent Computer Science graduate from UBC Okanagan.
+      I build full-stack applications, with an interest in backend systems
+      and practical AI integration.
+    </p>
+    <div class="hero-actions flex flex-wrap gap-3">
+      <a class="button button-primary" href="#projects">Explore projects <span aria-hidden="true">↓</span></a>
+      <a class="button button-secondary" href={site.github}>GitHub profile <span aria-hidden="true">↗</span></a>
+    </div>
+    <p class="availability"><span aria-hidden="true"></span> Open to software engineering opportunities across Canada</p>
+  </section>
+
+  <section id="projects" class="projects-section content-width" aria-labelledby="projects-title">
+    <div class="section-heading">
+      <h2 id="projects-title">Selected projects</h2>
+      <p>A collaborative capstone and two independent projects.</p>
+    </div>
+    <div class="projects-list">
+      {projects.map((project) => <ProjectShowcase project={project} />)}
+    </div>
+  </section>
+
+  <section id="about" class="about-section section-bordered" aria-labelledby="about-title">
+    <div class="content-width about-grid">
+      <div>
+        <p class="eyebrow">A little about me</p>
+        <h2 id="about-title">Building across<br /> the stack.</h2>
+      </div>
+      <div class="about-copy">
+        <p>I graduated from the University of British Columbia Okanagan in August 2026 with a Bachelor of Science in Computer Science.</p>
+        <p>Through collaborative software and independent projects, I’ve worked across user interfaces, backend services, and data workflows. I enjoy understanding how those pieces fit together and making them work reliably.</p>
+        <p>I’m looking for a software engineering role where I can contribute, keep learning, and work through useful problems with a team.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="skills-section content-width" aria-labelledby="skills-title">
+    <div class="section-heading">
+      <h2 id="skills-title">Tools I work with</h2>
+      <p>Technologies used in the projects above.</p>
+    </div>
+    <dl class="skills-grid">
+      {skillGroups.map((group) => (
+        <div>
+          <dt>{group.title}</dt>
+          <dd><ul>{group.skills.map((skill) => <li>{skill}</li>)}</ul></dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section id="contact" class="contact-section section-bordered" aria-labelledby="contact-title">
+    <div class="content-width contact-grid">
+      <div>
+        <p class="eyebrow">Get in touch</p>
+        <h2 id="contact-title">Let’s build<br /> something useful<span class="accent">.</span></h2>
+        <p>Open to software engineering opportunities throughout Canada.<br class="desktop-break" /> I’d be glad to hear about your team and what you’re working on.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-email" href={`mailto:${site.email}`}>{site.email}<span aria-hidden="true">↗</span></a>
+        <a href={site.github}><span>GitHub</span><span aria-hidden="true">↗</span></a>
+        <a href={site.linkedin}><span>LinkedIn</span><span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
