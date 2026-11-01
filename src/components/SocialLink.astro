@@ -1,0 +1,33 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  kind: 'github' | 'linkedin' | 'email';
+  href: string;
+  label?: string;
+}
+
+const { kind, href, label = { github: 'GitHub', linkedin: 'LinkedIn', email: 'Email Joel' }[kind] } = Astro.props;
+---
+
+<a class="social-link" data-social={kind} href={href} aria-label={label}>
+  <Icon name={kind === 'email' ? 'mail' : kind} size={21} />
+  <span class="social-tooltip" aria-hidden="true">{label}</span>
+</a>
+
+<script>
+  const links = document.querySelectorAll<HTMLAnchorElement>('.social-link');
+
+  links.forEach((link) => {
+    const resetTooltip = () => link.removeAttribute('data-tooltip-dismissed');
+    link.addEventListener('pointerleave', resetTooltip);
+    link.addEventListener('blur', resetTooltip);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    links.forEach((link) => {
+      if (link.matches(':hover, :focus-visible')) link.setAttribute('data-tooltip-dismissed', '');
+    });
+  });
+</script>

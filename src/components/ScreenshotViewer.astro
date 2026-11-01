@@ -1,0 +1,107 @@
+---
+import Icon from './Icon.astro';
+---
+
+<dialog class="screenshot-viewer" data-screenshot-viewer aria-labelledby="screenshot-viewer-title" aria-describedby="screenshot-viewer-caption">
+  <div class="viewer-panel">
+    <header class="viewer-header">
+      <h2 id="screenshot-viewer-title">Screenshot</h2>
+      <button class="viewer-control" type="button" data-viewer-zoom aria-label="Show actual size" aria-pressed="false" title="Show actual size">
+        <Icon name="expand" />
+      </button>
+      <form method="dialog">
+        <button class="viewer-control" type="submit" aria-label="Close screenshot" title="Close screenshot" autofocus>
+          <Icon name="close" />
+        </button>
+      </form>
+    </header>
+    <div class="viewer-image-area" tabindex="0" role="region" aria-label="Screenshot image area">
+      <p class="viewer-status" role="status" data-viewer-status></p>
+      <img alt="" decoding="async" data-viewer-image />
+    </div>
+    <p class="viewer-caption" id="screenshot-viewer-caption"></p>
+  </div>
+</dialog>
+
+<script>
+  function initializeScreenshotViewer() {
+    const viewer = document.querySelector<HTMLDialogElement>('[data-screenshot-viewer]');
+    const image = viewer?.querySelector<HTMLImageElement>('[data-viewer-image]');
+    const title = viewer?.querySelector<HTMLElement>('#screenshot-viewer-title');
+    const caption = viewer?.querySelector<HTMLElement>('#screenshot-viewer-caption');
+    const status = viewer?.querySelector<HTMLElement>('[data-viewer-status]');
+    const zoom = viewer?.querySelector<HTMLButtonElement>('[data-viewer-zoom]');
+    if (!viewer || !image || !title || !caption || !status || !zoom || typeof viewer.showModal !== 'function') return;
+
+    let opener: HTMLAnchorElement | null = null;
+
+    const setZoom = (zoomed: boolean) => {
+      viewer.classList.toggle('is-zoomed', zoomed);
+      zoom.setAttribute('aria-pressed', String(zoomed));
+      zoom.setAttribute('aria-label', zoomed ? 'Fit image to screen' : 'Show actual size');
+      zoom.title = zoomed ? 'Fit image to screen' : 'Show actual size';
+    };
+
+    document.addEventListener('click', (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[data-viewer]') : null;
+      if (!link) return;
+
+      event.preventDefault();
+      opener = link;
+      title.textContent = link.dataset.viewerTitle || 'Screenshot';
+      caption.textContent = link.dataset.viewerCaption || '';
+      image.alt = link.dataset.viewerAlt || 'Project application screenshot';
+      status.textContent = 'Loading image…';
+      zoom.disabled = true;
+      setZoom(false);
+      image.src = link.href;
+      document.documentElement.classList.add('image-viewer-open');
+      viewer.showModal();
+    });
+
+    image.addEventListener('load', () => {
+      status.textContent = '';
+      zoom.disabled = false;
+    });
+    image.addEventListener('error', () => {
+      status.textContent = 'This image could not be loaded.';
+    });
+
+    const toggleZoom = () => setZoom(!viewer.classList.contains('is-zoomed'));
+    zoom.addEventListener('click', toggleZoom);
+    image.addEventListener('click', toggleZoom);
+
+    viewer.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') return;
+      const controls = Array.from(viewer.querySelectorAll<HTMLElement>('button:not([disabled]), [tabindex="0"]'));
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    });
+
+    viewer.addEventListener('click', (event) => {
+      if (event.target !== viewer) return;
+      const bounds = viewer.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) viewer.close();
+    });
+
+    viewer.addEventListener('close', () => {
+      document.documentElement.classList.remove('image-viewer-open');
+      setZoom(false);
+      image.removeAttribute('src');
+      image.alt = '';
+      status.textContent = '';
+      opener?.focus({ preventScroll: true });
+      opener = null;
+    });
+  }
+
+  initializeScreenshotViewer();
+</script>

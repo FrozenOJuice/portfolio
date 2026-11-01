@@ -1,8 +1,8 @@
 export const site = {
   name: 'Joel deHoog',
-  title: 'Joel deHoog — Software Engineer',
+  title: 'Joel deHoog — Software Developer',
   description:
-    'Recent Computer Science graduate from UBC Okanagan building full-stack applications, backend systems, and AI integrations. Open to software engineering opportunities across Canada.',
+    'Joel deHoog, Software Developer and recent UBC Okanagan Computer Science graduate. Full-stack applications, backend systems, and AI integration.',
   email: 'joel.dehoog@gmail.com',
   github: 'https://github.com/FrozenOJuice',
   linkedin: 'https://www.linkedin.com/in/joel-dehoog-815230293/',
@@ -14,5 +14,5 @@ export const skillGroups = [
   { title: 'Languages', skills: ['TypeScript', 'JavaScript', 'Python', 'Go', 'SQL'] },
   { title: 'Frontend', skills: ['Angular', 'React', 'Next.js'] },
   { title: 'Backend & data', skills: ['Node.js', 'Express', 'FastAPI', 'PostgreSQL'] },
-  { title: 'Integrations', skills: ['Canvas LMS', 'OpenCV', 'AI APIs'] },
+  { title: 'Integrations', skills: ['OpenCV', 'AI APIs'] },
 ];

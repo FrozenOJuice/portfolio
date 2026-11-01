@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import type { Project } from '../data/projects';
+import Icon from './Icon.astro';
+import SocialLink from './SocialLink.astro';
 
 interface Props {
   project: Project;
@@ -10,50 +12,34 @@ const { project } = Astro.props;
 ---
 
 <article class="project-showcase" aria-labelledby={`${project.id}-title`}>
-  <div class="project-heading">
-    <div>
-      <p class="project-context">{project.context}</p>
-      <h3 id={`${project.id}-title`}>{project.name}</h3>
-    </div>
-    {project.sourceUrl && (
-      <a class="text-link project-source" href={project.sourceUrl} aria-label={`View on GitHub: ${project.name}`}>
-        View on GitHub <span aria-hidden="true">↗</span>
-      </a>
-    )}
-  </div>
-
   <figure>
-    <a class={`project-image-link ${project.id}-image`} href={project.image.src} aria-label={`Open full-size ${project.name} screenshot`}>
-      <Image
-        src={project.image}
-        alt={project.imageAlt}
-        widths={[480, 768, 1100, 1600]}
-        sizes="(max-width: 1148px) calc(100vw - 48px), 1100px"
-        format="webp"
-        quality={85}
-        loading="lazy"
-        decoding="async"
-      />
-      <span class="image-expand" aria-hidden="true">View full size ↗</span>
+    <a class="project-screenshot" href={project.image.src} data-viewer data-viewer-title={project.name} data-viewer-alt={project.imageAlt} data-viewer-caption={project.caption} aria-label={`View screenshot: ${project.name}`}>
+      <span class="project-image-link">
+        <Image
+          src={project.image}
+          alt={project.imageAlt}
+          widths={[360, 640, 960, 1440]}
+          sizes="(min-width: 1148px) 351px, (min-width: 1024px) calc((100vw - 96px) / 3), (min-width: 700px) calc((100vw - 72px) / 2), calc(100vw - 40px)"
+          format="webp"
+          quality={85}
+          loading="eager"
+          decoding="async"
+        />
+      </span>
+      <span class="screenshot-action"><Icon name="expand" size={17} /> View screenshot</span>
     </a>
-    <figcaption>
-      <span>{project.caption}</span>
-      {project.credit && <a href={project.credit.url}>{project.credit.label} <span aria-hidden="true">↗</span></a>}
-    </figcaption>
+    <figcaption class="sr-only">{project.caption}</figcaption>
   </figure>
 
-  <div class="project-details">
-    <div>
-      <p class="project-description">{project.description}</p>
-      <ul class="technology-list" aria-label={`${project.name} technologies`}>
-        {project.technologies.map((technology) => <li>{technology}</li>)}
-      </ul>
+  <div class="project-body">
+    <div class="project-title-row">
+      <h3 id={`${project.id}-title`}>{project.name}</h3>
+      {project.sourceUrl && <SocialLink kind="github" href={project.sourceUrl} label={`${project.name} on GitHub`} />}
     </div>
-    <div class="project-highlights">
-      <h4>{project.highlightsTitle}</h4>
-      <ul>
-        {project.highlights.map((highlight) => <li>{highlight}</li>)}
-      </ul>
-    </div>
+    <p class="project-description">
+      {project.description}
+      {project.credit && <a class="project-credit" href={project.credit.url}>{project.credit.label}</a>}
+    </p>
+    <p class="project-technologies" aria-label={`${project.name} technologies`}>{project.technologies.join(' · ')}</p>
   </div>
 </article>
