@@ -74,8 +74,9 @@ link to GitHub; TradeX has no source-code link. No React integration is installe
   Production builds use the generated assets and do not require macOS or Swift.
   `site.resume` holds the root-relative PDF path; set it to `null` to hide the link.
 - Image sources and retained notices are in `src/assets/projects/README.md`.
-  Every168 uses its GitHub social preview on the homepage and its Calendar capture
-  on the case study. No application UI is generated.
+  Every168 uses its genuine Calendar capture on the homepage and case study.
+  No application UI is generated. Project titles open case studies; screenshot
+  links open the separate image viewer.
 - The editable portfolio social card is `src/assets/social-card.svg`; keep its
   PNG export in `public/social-card.png` in sync.
 

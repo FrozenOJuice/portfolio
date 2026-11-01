@@ -75,6 +75,8 @@ section[id], main[id] { scroll-margin-top: 24px; }
 .screenshot-action { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; }
 .project-body { display: flex; flex: 1; flex-direction: column; padding-top: 16px; }
 .project-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
+.project-title-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--color-ink); }
+.project-title-link:hover, .project-title-link:focus-visible { color: var(--color-accent); text-decoration: underline; }
 .project-description { margin-top: 7px; }
 .project-credit { display: inline; margin-left: 4px; text-decoration: underline; }
 .project-technologies { margin-top: 12px; color: var(--color-muted); }

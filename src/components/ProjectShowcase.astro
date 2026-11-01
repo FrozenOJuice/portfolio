@@ -33,7 +33,7 @@ const { project } = Astro.props;
 
   <div class="project-body">
     <div class="project-title-row">
-      <h3 id={`${project.id}-title`}>{project.name}</h3>
+      <h3 id={`${project.id}-title`}><a class="project-title-link" href={`/projects/${project.id}/`}>{project.name}</a></h3>
       {project.sourceUrl && <SocialLink kind="github" href={project.sourceUrl} label={`${project.name} on GitHub`} />}
     </div>
     <p class="project-description">
