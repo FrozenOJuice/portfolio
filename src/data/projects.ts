@@ -1,6 +1,7 @@
 import type { ImageMetadata } from 'astro';
 import omrImage from '../assets/projects/omr-exam-review.png';
 import every168Image from '../assets/projects/every168-social-preview.png';
+import every168Calendar from '../assets/projects/every168-calendar.png';
 import tradexImage from '../assets/projects/tradex-replay.png';
 
 export interface Project {
@@ -11,6 +12,9 @@ export interface Project {
   image: ImageMetadata;
   imageAlt: string;
   caption: string;
+  caseImage?: ImageMetadata;
+  caseImageAlt?: string;
+  caseCaption?: string;
   credit?: { label: string; url: string };
   sourceUrl?: string;
 }
@@ -38,6 +42,9 @@ export const projects: Project[] = [
     image: every168Image,
     imageAlt: 'Every168 GitHub social preview with its wordmark, calendar, and live-workout captures.',
     caption: 'Every168 calendar and fitness preview.',
+    caseImage: every168Calendar,
+    caseImageAlt: 'Every168 weekly calendar with scheduled work, learning, and workout reservations.',
+    caseCaption: 'Weekly planning in Every168, with a workout linked to its calendar reservation.',
     sourceUrl: 'https://github.com/FrozenOJuice/Every168',
   },
   {

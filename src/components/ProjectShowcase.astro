@@ -41,5 +41,8 @@ const { project } = Astro.props;
       {project.credit && <a class="project-credit" href={project.credit.url}>{project.credit.label}</a>}
     </p>
     <p class="project-technologies" aria-label={`${project.name} technologies`}>{project.technologies.join(' · ')}</p>
+    <a class="project-case-link" href={`/projects/${project.id}/`} aria-label={`Read case study: ${project.name}`}>
+      Case study <span aria-hidden="true">→</span>
+    </a>
   </div>
 </article>

@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon from './Icon.astro';
+import preview from '../data/resume-preview.json';
+
+interface Props {
+  href: string;
+}
+
+const { href } = Astro.props;
+const assets = import.meta.glob<{ default: ImageMetadata }>('../assets/resume/page-*.png', { eager: true });
+const pages = preview.pages.map((page) => {
+  const image = assets[`../assets/resume/${page.image}`]?.default;
+  if (!image) throw new Error(`Missing resume preview: ${page.image}`);
+  return { image, text: page.text };
+});
+---
+
+<a class="resume-trigger" href={href} data-resume-trigger aria-haspopup="dialog" aria-controls="resume-viewer">
+  <Icon name="resume" size={22} />
+  <span>Resume</span>
+</a>
+
+<dialog id="resume-viewer" class="resume-viewer" data-resume-viewer aria-labelledby="resume-viewer-title" aria-describedby="resume-viewer-help">
+  <div class="resume-panel">
+    <div class="resume-heading">
+      <h2 id="resume-viewer-title">Resume</h2>
+      <form method="dialog">
+        <button class="resume-close" type="submit" aria-label="Close resume" autofocus>
+          <Icon name="close" size={18} /> Close
+        </button>
+      </form>
+    </div>
+    <div class="resume-actions">
+      <button class="resume-zoom" type="button" data-resume-zoom aria-controls="resume-preview">Zoom in</button>
+      <a href={href} download>Download PDF</a>
+      <a href={href} target="_blank" rel="noopener noreferrer" aria-label="Open PDF in a new tab">Open PDF <span aria-hidden="true">↗</span></a>
+    </div>
+    <p class="sr-only" id="resume-viewer-help">Read the resume here, enlarge the page, or download the original PDF. Close this dialog to return to the portfolio.</p>
+    <div class="resume-body" id="resume-preview" tabindex="0" role="region" aria-label="Resume preview">
+      <p class="resume-status" role="status" data-resume-status></p>
+      <div class="resume-pages">
+        {pages.map((page, index) => (
+          <section class="resume-page" aria-label={`Resume page ${index + 1}`}>
+            <Image
+              src={page.image}
+              alt=""
+              widths={[480, 960, 1440, 1836]}
+              sizes="(min-width: 1000px) 900px, calc(100vw - 72px)"
+              format="webp"
+              quality={95}
+              loading="lazy"
+              decoding="async"
+              data-resume-page
+            />
+            <div class="sr-only resume-readable-text">{page.text}</div>
+          </section>
+        ))}
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  function initializeResumeViewer() {
+    const trigger = document.querySelector<HTMLAnchorElement>('[data-resume-trigger]');
+    const viewer = document.querySelector<HTMLDialogElement>('[data-resume-viewer]');
+    const body = viewer?.querySelector<HTMLElement>('.resume-body');
+    const zoom = viewer?.querySelector<HTMLButtonElement>('[data-resume-zoom]');
+    const status = viewer?.querySelector<HTMLElement>('[data-resume-status]');
+    if (!trigger || !viewer || !body || !zoom || !status || typeof viewer.showModal !== 'function') return;
+
+    const images = Array.from(viewer.querySelectorAll<HTMLImageElement>('[data-resume-page]'));
+    images.forEach((image) => { image.dataset.fitSizes = image.sizes; });
+
+    const updateStatus = () => {
+      if (images.some((image) => image.complete && image.naturalWidth === 0)) {
+        status.textContent = 'The preview could not be loaded. You can download or open the PDF above.';
+      } else {
+        status.textContent = images[0]?.complete ? '' : 'Loading resume…';
+      }
+    };
+    images.forEach((image) => {
+      image.addEventListener('load', updateStatus);
+      image.addEventListener('error', updateStatus);
+    });
+
+    const setZoom = (zoomed: boolean) => {
+      viewer.classList.toggle('is-zoomed', zoomed);
+      zoom.textContent = zoomed ? 'Fit to width' : 'Zoom in';
+      images.forEach((image) => { image.sizes = zoomed ? '1200px' : image.dataset.fitSizes || '100vw'; });
+    };
+
+    trigger.addEventListener('click', (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      setZoom(false);
+      document.documentElement.classList.add('resume-viewer-open');
+      viewer.showModal();
+      body.scrollTo(0, 0);
+      updateStatus();
+    });
+
+    zoom.addEventListener('click', () => {
+      const position = body.scrollTop / Math.max(body.scrollHeight, 1);
+      setZoom(!viewer.classList.contains('is-zoomed'));
+      body.scrollTop = position * body.scrollHeight;
+      body.scrollLeft = 0;
+    });
+
+    viewer.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') return;
+      const controls = Array.from(viewer.querySelectorAll<HTMLElement>('button, a[href], [tabindex="0"]'));
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    });
+
+    viewer.addEventListener('click', (event) => {
+      if (event.target !== viewer) return;
+      const bounds = viewer.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) viewer.close();
+    });
+
+    viewer.addEventListener('close', () => {
+      document.documentElement.classList.remove('resume-viewer-open');
+      trigger.focus({ preventScroll: true });
+    });
+  }
+
+  initializeResumeViewer();
+</script>

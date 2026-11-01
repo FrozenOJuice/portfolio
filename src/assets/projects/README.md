@@ -14,13 +14,22 @@ responsive WebP derivatives for display; the viewer opens the original image.
   the project wordmark with genuine Calendar and live-workout captures using
   synthetic data. Source project: MIT. The included Lucide/Feather icon notice
   is retained in `EVERY168-ICON-NOTICES.txt`.
-- `every168-calendar.png`: the original Calendar capture retained as a source
-  reference; it is not used by the current homepage. Every168's
+- `omr-template-editor.png` and `omr-canvas-import.png`: unchanged captures from
+  `docs/portfolio/screenshots/template-editor.png` and `canvas-course-import.png`
+  in the same OMR source, with the same team attribution and provenance.
+- `every168-calendar.png`: the original Calendar capture used as the case-study
+  lead image. `every168-workout-builder.png` and `every168-workout-summary.png`
+  come from `docs/media/screenshots/workout-builder.png` and `workout-summary.png`.
+  Every168's
   [media documentation](https://github.com/FrozenOJuice/Every168/blob/main/docs/media/README.md)
-  records capture and licensing details for both images.
+  records capture and licensing details for these images; the retained icon notice
+  applies to the additional screenshots too.
 - `tradex-replay.png`: the private TradeX workspace's
   `portfolio/screenshots/TradeX-01-Main-Chart.png`. Genuine local Replay capture
   showing historical market data. It retains its TradingView attribution.
   No private repository URL is published, and no trading performance is asserted.
+- `tradex-measurement-catalog.png` and `tradex-ai-analysis.png`: unchanged local
+  captures from `portfolio/screenshots/TradeX-03-Measurement-Catalog.png` and
+  `TradeX-04-AI-Analysis.png`. The latter shows the scripted AI walkthrough interface.
 
 No application screens were generated or redrawn.

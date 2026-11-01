@@ -1,0 +1,73 @@
+---
+projectId: tradex
+---
+
+import CaseStudyImage from '../../components/CaseStudyImage.astro';
+import catalogImage from '../../assets/projects/tradex-measurement-catalog.png';
+import analysisImage from '../../assets/projects/tradex-ai-analysis.png';
+
+## Problem and solution
+
+Market-analysis tools need to agree on what information was available at a given
+moment. Replay, backtests, charts, and AI analysis become difficult to compare if
+they use different evidence or accidentally include later data.
+
+TradeX brings these workflows into one workspace, using a shared completed-minute
+processing engine and explicit point-in-time observations.
+
+## My role
+
+My work spans the React interface, Node.js services, PostgreSQL persistence,
+Replay and backtest workflows, and AI-provider integration. The engineering focus
+is consistent evidence, explicit validation boundaries, and traceable state changes.
+The source repository is private.
+
+## Technologies and architecture
+
+A React/TypeScript frontend uses generated API contracts and TradingView
+Lightweight Charts. Express coordinates application services through repository
+and provider ports. PostgreSQL stores candles, runs, assessments, usage, and
+lifecycle events; worker threads handle isolated background work.
+
+The AI analyst investigates immutable observations through bounded tools. A
+separate deterministic watcher monitors accepted conditions without calling a
+model for every price update. Server-sent events prompt the interface to refetch
+authoritative backend state.
+
+## Engineering challenges
+
+### Preserving point-in-time evidence
+
+Observations and history reads are fenced by the selected clock and source
+identity. Replay rewind creates a new monitoring branch so future outcomes do not
+leak into an earlier state.
+
+### Reusing prepared data safely
+
+Content identities bind Replay artifacts to their market inputs, contract,
+calendar, and engine configuration. Dependency changes invalidate cached
+projections, with parity checks protecting their meaning across processing paths.
+
+### Separating AI output from committed state
+
+Provider limits, usage settlement, claim validation, and publication checks sit
+between model output and persisted assessments. Notifications read committed
+lifecycle events rather than treating conversational text as authoritative state.
+
+## Results, testing, and limitations
+
+The October 31, 2026 local verification records 440 passing frontend tests,
+passing backend regressions, API compatibility, architecture checks, and TypeScript.
+The retained checkpoint also records browser and isolated database coverage;
+those suites were not rerun for the documentation update.
+
+Live feeds require configured provider access. The portfolio's AI walkthrough is
+scripted; provider integration and deterministic watcher behavior have separate
+test coverage. The application remains a local/private workspace without broker
+order routing.
+
+## Additional screenshots
+
+<CaseStudyImage image={catalogImage} alt="TradeX measurement catalog with categories and a selected definition showing its inputs, formula, units, and completion rules." caption="Inspecting a market measurement's definition and required inputs." />
+
+<CaseStudyImage image={analysisImage} alt="TradeX Replay workspace with an AI analysis conversation beside the historical chart." caption="The AI analysis interface alongside the Replay chart." />

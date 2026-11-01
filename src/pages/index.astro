@@ -4,6 +4,7 @@ import ProjectShowcase from '../components/ProjectShowcase.astro';
 import { projects } from '../data/projects';
 import { site, skillGroups } from '../data/site';
 import SocialLink from '../components/SocialLink.astro';
+import ResumeViewer from '../components/ResumeViewer.astro';
 ---
 
 <BaseLayout title={site.title}>
@@ -11,7 +12,7 @@ import SocialLink from '../components/SocialLink.astro';
     <div>
       <h1 id="hero-title">Joel deHoog</h1>
       <p class="hero-profession">Software Developer</p>
-      <p class="hero-introduction">I build practical web applications, from the interface to the backend.</p>
+      <p class="hero-introduction">I build for the edge cases: interrupted saves, daylight saving time, and AI answers that need evidence.</p>
     </div>
     <div class="hero-background">
       <p>Recent graduate · BSc in Computer Science<br />UBC Okanagan, 2026</p>
@@ -20,7 +21,7 @@ import SocialLink from '../components/SocialLink.astro';
         <SocialLink kind="github" href={site.github} />
         <SocialLink kind="linkedin" href={site.linkedin} />
         <SocialLink kind="email" href={`mailto:${site.email}`} label={`Email ${site.email}`} />
-        {site.resume && <a href={site.resume}>Resume <span aria-hidden="true">↗</span></a>}
+        {site.resume && <ResumeViewer href={site.resume} />}
       </div>
     </div>
   </section>
@@ -37,7 +38,7 @@ import SocialLink from '../components/SocialLink.astro';
   <div class="profile-sections content-width">
     <section id="about" aria-labelledby="about-title">
       <h2 id="about-title">About</h2>
-      <p>I completed my Computer Science degree in three years and bring a strong work ethic to independent and team projects. My work spans application interfaces, backend services, and integrations, including a team capstone for exam grading. I enjoy learning new tools and building software that solves practical problems.</p>
+      <p>I completed my Computer Science degree in three years. In a capstone team of six, I worked on account recovery and Canvas grade release. My independent projects include scheduling across time zones, retries that avoid duplicate writes, and AI analysis tied to recorded market data.</p>
     </section>
     <section aria-labelledby="skills-title">
       <h2 id="skills-title">Technical skills</h2>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import CaseStudyImage from '../components/CaseStudyImage.astro';
+import SocialLink from '../components/SocialLink.astro';
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const image = project.caseImage ?? project.image;
+const imageAlt = project.caseImageAlt ?? project.imageAlt;
+const caption = project.caseCaption ?? project.caption;
+const sections = [
+  ['problem-and-solution', 'Overview'],
+  ['my-role', 'My role'],
+  ['technologies-and-architecture', 'Architecture'],
+  ['engineering-challenges', 'Engineering'],
+  ['results-testing-and-limitations', 'Results'],
+  ['additional-screenshots', 'Screenshots'],
+];
+---
+
+<BaseLayout title={`${project.name} — Joel deHoog`} description={project.description} image={image} imageAlt={imageAlt}>
+  <div class="case-study content-width">
+    <a class="case-back-link" href="/#projects"><span aria-hidden="true">←</span> All projects</a>
+    <div class="case-heading">
+      <h1>{project.name}</h1>
+      <p class="case-overview">{project.description}</p>
+      <div class="case-project-meta">
+        <p>{project.technologies.join(' · ')}</p>
+        {project.sourceUrl && <SocialLink kind="github" href={project.sourceUrl} label={`${project.name} on GitHub`} />}
+      </div>
+      {project.credit && <p class="case-credit"><a href={project.credit.url}>{project.credit.label}</a></p>}
+    </div>
+    <nav class="case-contents" aria-label="On this page">
+      <ul>{sections.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}</ul>
+    </nav>
+    <CaseStudyImage image={image} alt={imageAlt} caption={caption} hero />
+    <article class="case-content" aria-label={`${project.name} case study`}>
+      <slot />
+    </article>
+    <nav class="case-end-links" aria-label="Project navigation">
+      <a class="case-back-link" href="/#projects"><span aria-hidden="true">←</span> Back to projects</a>
+      <a class="case-back-link" href="/#contact">Contact Joel <span aria-hidden="true">→</span></a>
+    </nav>
+  </div>
+</BaseLayout>

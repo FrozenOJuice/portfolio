@@ -1,0 +1,28 @@
+---
+import type { GetStaticPaths, MDXInstance } from 'astro';
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import { projects, type Project } from '../../data/projects';
+
+type CaseStudy = MDXInstance<{ projectId: string }>;
+
+export const getStaticPaths = (() => {
+  const studies = import.meta.glob<CaseStudy>('../../content/projects/*.mdx', { eager: true });
+
+  return Object.values(studies).map(({ Content, frontmatter }) => {
+    const project = projects.find(({ id }) => id === frontmatter.projectId);
+    if (!project) throw new Error(`Unknown case-study project: ${frontmatter.projectId}`);
+    return { params: { slug: project.id }, props: { project, Content } };
+  });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  project: Project;
+  Content: CaseStudy['Content'];
+}
+
+const { project, Content } = Astro.props;
+---
+
+<CaseStudyLayout project={project}>
+  <Content />
+</CaseStudyLayout>

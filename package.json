@@ -11,7 +11,8 @@
     "dev": "astro dev",
     "build": "npm run check && astro build",
     "preview": "astro preview",
-    "check": "astro check",
+    "resume:preview": "swift -module-cache-path /tmp/portfolio-resume-swift-cache scripts/render-resume.swift",
+    "check": "node scripts/check-resume-preview.mjs && astro check",
     "astro": "astro"
   },
   "dependencies": {

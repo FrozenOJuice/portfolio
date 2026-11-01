@@ -1,0 +1,73 @@
+---
+projectId: omr-system
+---
+
+import CaseStudyImage from '../../components/CaseStudyImage.astro';
+import templateImage from '../../assets/projects/omr-template-editor.png';
+import canvasImage from '../../assets/projects/omr-canvas-import.png';
+
+## Problem and solution
+
+Turning scanned multiple-choice exams into grades takes more than recognizing
+bubbles. Instructors need to review uncertain answers, make corrections, and
+release results to the right students.
+
+Our six-person capstone team built a browser application covering exam setup,
+custom answer sheets, PDF uploads, recognition, grading, review, and Canvas release.
+
+## My role
+
+I contributed to authentication, password recovery, administrator accounts, Canvas
+course imports, roster synchronization, grade release, and student result links.
+I also worked on exam templates, scanned answer keys, and academic terms.
+
+The recognition engine and complete application were collaborative work.
+The [contribution breakdown](https://github.com/FrozenOJuice/omr-project/blob/main/docs/portfolio/contributions.md)
+separates my contributions from the team's wider delivery.
+
+## Technologies and architecture
+
+Angular provides the interface. FastAPI coordinates permissions, exams, grades,
+and review states, backed by PostgreSQL and Garage object storage. A separate
+Go/OpenCV service handles PDF preprocessing and mark recognition. Docker Compose
+connects the services for local development.
+
+## Engineering challenges
+
+### Connecting external records
+
+Canvas courses, rosters, assignments, and grades had to map to the application's
+own records. Grade release distinguishes successful, skipped, and failed records
+so partial failures can be understood rather than hidden.
+
+### Controlling access to results
+
+Account recovery, administrator actions, and student result links cross frontend,
+API, and database boundaries. Canvas tokens are encrypted, and student result
+links are time-limited.
+
+### Keeping human review in the workflow
+
+The team kept scanned sheets visible alongside detected responses. Ambiguous marks
+remain reviewable, with correction and release history, instead of becoming an
+unexplained final score.
+
+## Results, testing, and limitations
+
+The team delivered the exam workflow and completed two rounds of usability testing.
+The October 31, 2026 validation records 936 passing frontend tests. OMR checks
+passed with two documented VM-dependent CPU tests excluded; the backend suite
+was not rerun during that preparation.
+
+[Testing evidence and commands](https://github.com/FrozenOJuice/omr-project/blob/main/docs/portfolio/testing.md)
+separate those checks from submission-era results. Live Canvas/email integration
+and large-scale deployment were outside that validation.
+
+## Additional screenshots
+
+<CaseStudyImage image={templateImage} alt="OMR bubble-sheet template editor with question rows, answer columns, and layout controls." caption="Configuring a custom answer-sheet template." />
+
+<CaseStudyImage image={canvasImage} alt="Canvas course-import dialog listing available courses inside OMR System." caption="Importing courses through the Canvas integration." />
+
+Built by Kaden Harris, Joel deHoog, Nathan Worth, Chad Glazier, Graeme Brown, and
+Tyson Livadney. [Team credits and provenance](https://github.com/FrozenOJuice/omr-project/blob/main/CONTRIBUTORS.md).

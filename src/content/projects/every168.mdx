@@ -1,0 +1,67 @@
+---
+projectId: every168
+---
+
+import CaseStudyImage from '../../components/CaseStudyImage.astro';
+import builderImage from '../../assets/projects/every168-workout-builder.png';
+import summaryImage from '../../assets/projects/every168-workout-summary.png';
+
+## Problem and solution
+
+A calendar reserves time; a workout log records what happened. Treating a planned
+workout as a completed session makes history unreliable.
+
+Every168 connects weekly planning with detailed workout logging while keeping
+reusable workouts, scheduled snapshots, and actual results separate. Completing
+a session updates its recorded calendar time without duplicating it.
+
+## My role
+
+I developed the Calendar and Fitness workflows across the Next.js interface,
+TypeScript API, and database. My focus included safe writes, account isolation,
+timezone correctness, and preserving workout history through later edits.
+
+## Technologies and architecture
+
+Next.js and React use a typed API client backed by shared Zod contracts. An Express
+modular monolith separates routes, domain services, and repositories, with Drizzle
+and PostgreSQL for persistence. Cross-domain work goes through public services;
+import-boundary checks enforce that separation.
+
+## Engineering challenges
+
+### Recovering interrupted writes
+
+A committed save can lose its response. Idempotency receipts commit with the write,
+while expected revisions reject stale edits. The browser preserves the exact
+pending request for a safe retry instead of creating a second record.
+
+### Handling local time correctly
+
+Calendar boundaries follow the account's timezone and week-start preference.
+Daylight-saving transitions can produce 167- or 169-hour weeks. Editing unchanged
+local fields preserves their original timestamps through repeated-hour boundaries.
+
+### Keeping history trustworthy
+
+Finished sessions retain their captured exercise definitions independently of
+reusable workouts. Corrections and deletions recalculate derived records, and
+comparison reads use a consistent database snapshot during concurrent changes.
+
+## Results, testing, and limitations
+
+The October 30, 2026 remediation report records passing unit, architecture,
+PostgreSQL integration, and browser suites. Coverage includes lost-response
+recovery, concurrent corrections, account isolation, keyboard access, and DST
+boundaries; [the report](https://github.com/FrozenOJuice/Every168/blob/main/docs/FIRST_RELEASE_REMEDIATION.md)
+records the scope and follow-up checks.
+
+Every168 is demonstrated locally, without a hosted service. Write recovery is
+limited to the current browser tab; offline synchronization and external calendar
+sync are outside the presented scope.
+
+## Additional screenshots
+
+<CaseStudyImage image={builderImage} alt="Every168 workout builder with exercise selection, target repetitions, weights, and rest controls." caption="Preparing a reusable workout with planned targets." />
+
+<CaseStudyImage image={summaryImage} alt="Every168 completed workout summary showing duration, completed sets, exercise results, and sourced records." caption="Reviewing completed results separately from planned targets." />

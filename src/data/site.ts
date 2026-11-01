@@ -6,8 +6,8 @@ export const site = {
   email: 'joel.dehoog@gmail.com',
   github: 'https://github.com/FrozenOJuice',
   linkedin: 'https://www.linkedin.com/in/joel-dehoog-815230293/',
-  // Set this to a path in public/ when a resume PDF is available.
-  resume: null as string | null,
+  // Replace the file in public/ when updating the resume, or set null to hide it.
+  resume: '/Portfolio_Resume.pdf' as string | null,
 };
 
 export const skillGroups = [
