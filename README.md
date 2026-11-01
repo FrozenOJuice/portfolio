@@ -4,6 +4,8 @@ Software Developer and Computer Science graduate from UBC Okanagan. This portfol
 presents my collaborative capstone and independent projects through concise case
 studies, genuine application screenshots, and a downloadable resume.
 
+**[Live website](https://portfolio-joels-projects-f04d04ca.vercel.app)**
+
 [GitHub](https://github.com/FrozenOJuice) ·
 [LinkedIn](https://www.linkedin.com/in/joel-dehoog-815230293/) ·
 [Email](mailto:joel.dehoog@gmail.com) · [Resume](public/Portfolio_Resume.pdf)
@@ -112,6 +114,6 @@ major. Static output needs no server adapter or additional Vercel configuration.
 See [Astro's Vercel guide](https://docs.astro.build/en/guides/deploy/vercel/) and
 [Vercel's Node version rules](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions).
 
-The production domain has not been configured. Once it is chosen, set Astro's
-`site` property in `astro.config.mjs` to that real origin so canonical URLs and
-absolute social-image URLs are generated. No deployment URL is claimed here.
+Astro's `site` property in `astro.config.mjs` uses the live website origin above
+to generate canonical URLs and absolute social-image URLs. Update it if the
+production domain changes.
