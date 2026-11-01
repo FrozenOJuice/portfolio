@@ -1,12 +1,40 @@
-# Portfolio
+# Joel deHoog — Portfolio
 
-A concise software development portfolio with MDX project case studies, built with Astro, strict
-TypeScript, Tailwind CSS 4, and the official MDX integration. The site is statically
-generated, with no backend or database.
+Software Developer and Computer Science graduate from UBC Okanagan. This portfolio
+presents my collaborative capstone and independent projects through concise case
+studies, genuine application screenshots, and a downloadable resume.
 
-## Setup
+[GitHub](https://github.com/FrozenOJuice) ·
+[LinkedIn](https://www.linkedin.com/in/joel-dehoog-815230293/) ·
+[Email](mailto:joel.dehoog@gmail.com) · [Resume](public/Portfolio_Resume.pdf)
 
-Use Node.js 24 LTS (`.nvmrc`) and npm. Astro requires Node.js 22.23.4 or later.
+![Finished portfolio homepage showing Joel deHoog, three project screenshots, About, skills, and contact links](docs/screenshots/homepage-desktop.png)
+
+The image is an unedited capture of the local production build at a 1440px desktop
+viewport. Open it to inspect the full-size homepage.
+
+## Featured projects
+
+| Project | Engineering focus | Source |
+| --- | --- | --- |
+| OMR System | Exam grading capstone built by a team of six; my contributions included accounts, password recovery, and Canvas integration. | [GitHub](https://github.com/FrozenOJuice/omr-project) · [Contributions](https://github.com/FrozenOJuice/omr-project/blob/main/docs/portfolio/contributions.md) |
+| Every168 | Independent calendar and fitness application with scheduling, workout logging, and reliable activity history. | [GitHub](https://github.com/FrozenOJuice/Every168) |
+| TradeX | Independent futures-analysis workspace with historical Replay, Backtesting, and AI-assisted analysis. | Private |
+
+Each project has an internal case study covering my role, architecture, engineering
+decisions, testing, and limitations. Screenshots open in a separate viewer. The
+resume opens in an overlay with zoom, download, and close controls.
+
+## Technology
+
+Astro 7, strict TypeScript, Tailwind CSS 4 through the official Vite plugin, and the
+official Astro MDX integration. npm manages dependencies. All four pages are
+statically generated; client-side JavaScript supports the viewers and tooltips.
+The portfolio has no backend, database, React integration, or UI library.
+
+## Local development
+
+Use Node.js **24.x**, as specified in `.nvmrc` and `package.json`, and npm.
 
 ```sh
 nvm install
@@ -15,102 +43,75 @@ npm ci
 npm run dev
 ```
 
-Open the local URL printed by Astro, normally `http://localhost:4321`. No environment
-variables or external services are required. Use `npm install` when changing
-dependencies, and keep the lockfile in sync.
-
-## Commands
+Open the local URL printed by Astro, normally `http://localhost:4321`.
+No environment variables or external services are required.
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Development server with hot reload. |
-| `npm run check` | Resume preview consistency, Astro, and TypeScript checking. |
-| `npm run build` | Type check, then generate the static site in `dist/`. |
-| `npm run preview` | Serve the existing production build locally. |
-| `npm run resume:preview` | Regenerate resume preview assets on macOS after replacing the PDF. |
-| `npm run astro -- --help` | Astro CLI help. |
+| `npm run dev` | Start the development server. |
+| `npm run check` | Check resume-preview consistency, Astro, and TypeScript. |
+| `npm run build` | Run checks and generate the production site in `dist/`. |
+| `npm run preview` | Serve the production build locally. |
+| `npm run resume:preview` | Regenerate resume previews on macOS after replacing the PDF. |
 
-## Structure
+Use `npm install` when changing dependencies and keep `package-lock.json` in sync.
 
-```text
-public/                       Resume PDF, favicon, and social preview
-src/
-  assets/projects/            Genuine project images and provenance notices
-  assets/resume/              Generated resume page previews
-  components/                 Footer, ProjectShowcase, social links, screenshot viewer
-  content/projects/           MDX case studies for OMR System, Every168, and TradeX
-  data/projects.ts            Project summaries, technologies, images, and public links
-  data/site.ts                Profile links, skills, and optional resume path
-  layouts/BaseLayout.astro    Shared document, metadata, and screenshot viewer
-  layouts/CaseStudyLayout.astro Shared case-study layout and section navigation
-  pages/index.astro           The portfolio homepage
-  pages/projects/[slug].astro Statically generated project pages
-  styles/global.css          Theme, responsive styles, and interaction states
-astro.config.mjs              Static output, official MDX integration, Tailwind Vite plugin
-tsconfig.json                 Astro's strict TypeScript preset
-```
+## Maintaining content
 
-Project case studies live at `/projects/omr-system/`, `/projects/every168/`, and
-`/projects/tradex/`. The dynamic route imports the MDX files at build time and
-matches their `projectId` frontmatter to `src/data/projects.ts`. Public sources
-link to GitHub; TradeX has no source-code link. No React integration is installed.
+| Location | Content |
+| --- | --- |
+| `src/pages/index.astro` | Homepage and About copy. |
+| `src/data/site.ts` | Profile links, skills, and resume path. |
+| `src/data/projects.ts` | Project summaries, images, and public source links. |
+| `src/content/projects/*.mdx` | Case-study writing. |
+| `src/layouts/CaseStudyLayout.astro` | Shared case-study layout and section navigation. |
+| `src/styles/global.css` | Theme, responsive layout, and interaction styles. |
+| `src/assets/projects/README.md` | Screenshot provenance and retained notices. |
+| `src/assets/social-card.svg` / `public/social-card.png` | Editable social card and its PNG export. |
 
-## Editing
+Case studies are generated at `/projects/omr-system/`, `/projects/every168/`, and
+`/projects/tradex/`. Their `projectId` frontmatter matches `src/data/projects.ts`.
+Project titles open these pages; screenshot links open the image viewer.
 
-- Keep project summaries brief in `src/data/projects.ts`.
-- Edit detailed project writing in `src/content/projects/*.mdx`. Each page shares
-  the same overview, role, architecture, engineering, results, and screenshot sections.
-- Update contact links and skills in `src/data/site.ts`.
-- The visible **Resume** link beside the introduction's social icons opens an
-  overlay with Close, zoom, download, and open-PDF controls. Escape and outside
-  clicks close it without changing browser history; keyboard focus returns to
-  the link. Only the document area scrolls, keeping the controls in view.
-  A screen-reader text copy accompanies the page preview.
-- To update the resume, replace `public/Portfolio_Resume.pdf`, run
-  `npm run resume:preview` on macOS, and run `npm run build`. The generator uses
-  the system's PDFKit to render the original pages and extract their text without
-  modifying the PDF. Commit the generated assets and `src/data/resume-preview.json`
-  with the PDF. A build-time hash check prevents a stale preview from shipping.
-  Production builds use the generated assets and do not require macOS or Swift.
-  `site.resume` holds the root-relative PDF path; set it to `null` to hide the link.
-- Image sources and retained notices are in `src/assets/projects/README.md`.
-  Every168 uses its genuine Calendar capture on the homepage and case study.
-  No application UI is generated. Project titles open case studies; screenshot
-  links open the separate image viewer.
-- The editable portfolio social card is `src/assets/social-card.svg`; keep its
-  PNG export in `public/social-card.png` in sync.
+To update the resume:
 
-The screenshot viewer supports zoom, keyboard scrolling, Close, Escape, and outside
-clicks. It preserves the page position and restores focus when closed. Its image
-links still work when JavaScript is disabled. Client code is limited to the screenshot
-viewer, resume overlay, and dismissing social-link tooltips with Escape; no UI
-libraries are used. Without JavaScript, the Resume link opens the original PDF.
+1. Replace `public/Portfolio_Resume.pdf`.
+2. Run `npm run resume:preview` on macOS, using the built-in PDFKit renderer.
+3. Run `npm run build` and review the overlay.
+4. Include the PDF, `src/assets/resume/`, and `src/data/resume-preview.json` together
+   when committing the update. The consistency check rejects stale previews.
 
-Social links use borderless SVG icons, accessible labels, and brand-color hover/focus
-states. Tooltips appear on hover and keyboard focus, with the address shown for email.
-There is no separate header. Case studies include section navigation and links
-back to projects and contact. The footer link scrolls smoothly to the page's top.
-Reduced-motion preferences disable scrolling animation and icon movement.
+Production builds use the generated assets and do not need macOS or Swift.
+Set `site.resume` to `null` to hide the resume link.
 
 ## Verification
 
-Run `npm run check` and `npm run build`, then inspect the production output with
-`npm run preview`. Check 1440px, 768px, 390px, and 320px widths, keyboard navigation,
-anchor scrolling, screenshot opening/closing and zoom, image loading, and accessibility
-on the homepage and all three project pages.
+Run `npm run check` and `npm run build`, then review `npm run preview` at 1440, 768,
+390, and 320px widths. Check all four pages, project-title and section links,
+image loading, keyboard navigation, social tooltips, and both viewers. Confirm PDF
+download and that closing either viewer restores focus and the page position.
+Viewers support Close, Escape, and outside clicks; reduced-motion preferences are
+respected. Without JavaScript, image and resume links still open their source files.
 
-## Static hosting
+To refresh the README image, capture the finished production homepage at 1440px
+wide with overlays closed and save it to `docs/screenshots/homepage-desktop.png`.
 
-Vercel can use the Astro preset, repository root, `npm run build`, and `dist`, with
-Node.js 24.x. No adapter is needed for static output. Nothing has been deployed.
+## Vercel configuration
 
-Set `site` in `astro.config.mjs` when the production domain is known. Canonical URLs
-and absolute social-image URLs are emitted only when it is configured, avoiding
-localhost metadata. TypeScript stays on 6.x to match the installed Astro checker.
+| Setting | Value |
+| --- | --- |
+| Framework preset | Astro |
+| Root directory | Repository root |
+| Install command | `npm ci` |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Node.js | 24.x |
 
-## References
+The Node engine is pinned to match `.nvmrc` and avoid Vercel selecting a different
+major. Static output needs no server adapter or additional Vercel configuration.
+See [Astro's Vercel guide](https://docs.astro.build/en/guides/deploy/vercel/) and
+[Vercel's Node version rules](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions).
 
-- [Astro](https://docs.astro.build/en/install-and-setup/)
-- [MDX integration](https://docs.astro.build/en/guides/integrations-guide/mdx/)
-- [Tailwind CSS with Astro](https://tailwindcss.com/docs/installation/framework-guides/astro)
-- [Astro on Vercel](https://docs.astro.build/en/guides/deploy/vercel/)
+The production domain has not been configured. Once it is chosen, set Astro's
+`site` property in `astro.config.mjs` to that real origin so canonical URLs and
+absolute social-image URLs are generated. No deployment URL is claimed here.

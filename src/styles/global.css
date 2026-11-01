@@ -44,7 +44,6 @@ section[id], main[id] { scroll-margin-top: 24px; }
 .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: start; padding-top: 44px; padding-bottom: 28px; }
 .hero h1 { font-size: 40px; }
 .hero-profession { margin-top: 5px; font-size: 23px; color: var(--color-accent); }
-.hero-introduction { max-width: 540px; margin-top: 10px; font-size: 17px; color: var(--color-muted); }
 .hero-background { padding-top: 3px; }
 .hero-background > p + p { margin-top: 8px; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 8px; }
@@ -140,7 +139,6 @@ section[id], main[id] { scroll-margin-top: 24px; }
   .case-contents ul { gap: 0 18px; }
   .case-content h2 { font-size: 24px; }
   h1 { font-size: 32px; }
-  .hero-introduction { font-size: 17px; }
   .projects-list { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .section-heading { margin-bottom: 16px; }
   .project-body { padding-top: 13px; }
